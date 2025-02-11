@@ -1,0 +1,38 @@
+          version: '3.8'
+          
+          services:
+            mariadb:
+              image: mariadb:latest
+              container_name: mariadb
+              environment:
+                MYSQL_ROOT_PASSWORD: rootpassword
+                MYSQL_DATABASE: paypath
+                MYSQL_USER: paypathuser
+                MYSQL_PASSWORD: paypathpassword
+              ports:
+                - "3306:3306"
+              volumes:
+                - mariadb_data:/var/lib/mysql
+              networks:
+                - paypath_network
+          
+            redis:
+              image: redis:latest
+              container_name: redis
+              environment:
+                REDIS_PASSWORD: your_redis_password
+              ports:
+                - "6379:6379"
+              volumes:
+                - redis_data:/data
+              command: ["redis-server", "--requirepass", "your_redis_password"]
+              networks:
+                - paypath_network
+          
+          networks:
+            paypath_network:
+              driver: bridge
+          
+          volumes:
+            mariadb_data:
+            redis_data:
